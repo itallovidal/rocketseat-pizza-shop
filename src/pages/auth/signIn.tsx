@@ -3,8 +3,38 @@ import { Helmet } from 'react-helmet-async'
 import { Button } from '@/components/ui/button.tsx'
 import { Label } from '@/components/ui/label.tsx'
 import { Input } from '@/components/ui/input.tsx'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
+
+const signInSchema = z.object({
+  email: z
+    .string({
+      required_error: 'Campo obrigatório',
+    })
+    .min(10, {
+      message: 'Campo deve haver pelo menos 10 caracteres.',
+    })
+    .email({
+      message: 'O campo precisa ser um email.',
+    }),
+})
+
+interface ISignInSchema extends z.infer<typeof signInSchema> {}
 
 export function SignIn() {
+  const {
+    handleSubmit,
+    register,
+    formState: { isSubmitting, errors },
+  } = useForm<ISignInSchema>({
+    resolver: zodResolver(signInSchema),
+  })
+
+  async function handleSignIn(data: ISignInSchema) {
+    console.log(data)
+  }
+
   return (
     <>
       <Helmet title={'Signin'} />
@@ -19,13 +49,18 @@ export function SignIn() {
             </p>
           </div>
 
-          <form className={'space-y-4'}>
+          <form onSubmit={handleSubmit(handleSignIn)} className={'space-y-4'}>
             <div className={'space-y-2'}>
               <Label>Seu e-mail</Label>
-              <Input id={'email'} type={'email'} />
+              <Input id={'email'} type={'email'} {...register('email')} />
+              {errors.email && <p>{errors.email.message}</p>}
             </div>
 
-            <Button className={'w-full'} type={'submit'}>
+            <Button
+              disabled={isSubmitting}
+              className={'w-full'}
+              type={'submit'}
+            >
               Acessar Painel
             </Button>
           </form>
