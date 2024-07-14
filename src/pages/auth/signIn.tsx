@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input.tsx'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
+import { toast } from 'sonner'
 
 const signInSchema = z.object({
   email: z
@@ -33,6 +34,7 @@ export function SignIn() {
 
   async function handleSignIn(data: ISignInSchema) {
     console.log(data)
+    toast.success('Enviamos um link de autenticação para seu email.')
   }
 
   return (
