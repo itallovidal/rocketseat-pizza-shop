@@ -5,6 +5,7 @@ import { Dashboard } from '@/pages/app/dashboard.tsx'
 import { AppLayout } from '@/pages/_layout/appLayout.tsx'
 import { AuthLayout } from '@/pages/_layout/authLayout.tsx'
 import { SignUp } from '@/pages/auth/signUp.tsx'
+import { Orders } from '@/pages/app/orders/orders.tsx'
 
 export function AppRoutes() {
   return (
@@ -12,6 +13,7 @@ export function AppRoutes() {
       <Routes>
         <Route path={'/'} element={<AppLayout />}>
           <Route path={'/'} element={<Dashboard />} />
+          <Route path={'/orders'} element={<Orders />} />
         </Route>
 
         <Route path={'/'} element={<AuthLayout />}>
