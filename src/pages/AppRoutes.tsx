@@ -4,6 +4,7 @@ import { SignIn } from '@/pages/auth/signIn.tsx'
 import { Dashboard } from '@/pages/app/dashboard.tsx'
 import { AppLayout } from '@/pages/_layout/appLayout.tsx'
 import { AuthLayout } from '@/pages/_layout/authLayout.tsx'
+import { SignUp } from '@/pages/auth/signUp.tsx'
 
 export function AppRoutes() {
   return (
@@ -15,6 +16,7 @@ export function AppRoutes() {
 
         <Route path={'/'} element={<AuthLayout />}>
           <Route path={'/sign-in'} element={<SignIn />} />
+          <Route path={'/sign-up'} element={<SignUp />} />
         </Route>
       </Routes>
     </BrowserRouter>

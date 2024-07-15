@@ -7,6 +7,8 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { toast } from 'sonner'
+import { Link } from 'react-router-dom'
+import { Separator } from '@/components/ui/separator.tsx'
 
 const signInSchema = z.object({
   email: z
@@ -66,6 +68,16 @@ export function SignIn() {
               Acessar Painel
             </Button>
           </form>
+          <Separator className={'w-1/2 m-auto'} />
+
+          <div
+            className={'space-y-4 flex justify-center flex-col items-center'}
+          >
+            <p className={'text-sm'}>Novo Por aqui?</p>
+            <Button asChild variant={'outline'}>
+              <Link to={'/sign-up'}>Cadastre seu estabelecimento</Link>
+            </Button>
+          </div>
         </div>
       </div>
     </>
