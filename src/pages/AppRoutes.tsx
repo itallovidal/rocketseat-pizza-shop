@@ -6,6 +6,7 @@ import { AppLayout } from '@/pages/_layout/appLayout.tsx'
 import { AuthLayout } from '@/pages/_layout/authLayout.tsx'
 import { SignUp } from '@/pages/auth/signUp.tsx'
 import { Orders } from '@/pages/app/orders/orders.tsx'
+import { NotFound } from '@/pages/404.tsx'
 
 export function AppRoutes() {
   return (
@@ -20,6 +21,8 @@ export function AppRoutes() {
           <Route path={'/sign-in'} element={<SignIn />} />
           <Route path={'/sign-up'} element={<SignUp />} />
         </Route>
+
+        <Route path={'*'} element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   )
