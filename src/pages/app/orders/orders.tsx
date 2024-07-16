@@ -1,19 +1,14 @@
-import React from 'react'
 import { Helmet } from 'react-helmet-async'
-import { Input } from '@/components/ui/input.tsx'
 import {
   Table,
   TableBody,
-  TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from '@/components/ui/table.tsx'
-import { Button } from '@/components/ui/button.tsx'
-import { ChevronRight, Search, X } from 'lucide-react'
 import { OrderRow } from '@/pages/app/orders/orderRow.tsx'
 import { OrderFilters } from '@/pages/app/orders/orderFilters.tsx'
-import {Pagination} from "@/components/pagination.tsx";
+import { Pagination } from '@/components/pagination.tsx'
 
 export function Orders() {
   return (
@@ -45,8 +40,7 @@ export function Orders() {
             </TableBody>
           </Table>
         </div>
-        <Pagination pageIndex={0} totalCount={105} perPage={10}/>
-
+        <Pagination pageIndex={0} totalCount={105} perPage={10} />
       </div>
     </>
   )

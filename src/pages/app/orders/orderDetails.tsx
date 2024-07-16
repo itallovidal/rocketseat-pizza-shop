@@ -14,7 +14,7 @@ import {
   TableRow,
 } from '@/components/ui/table.tsx'
 
-export function OrderDetails(props) {
+export function OrderDetails() {
   return (
     <DialogContent>
       <DialogHeader>
@@ -58,7 +58,7 @@ export function OrderDetails(props) {
               <TableCell className={'text-muted-foreground'}>
                 Realizado há
               </TableCell>
-              <TableCell className={'flex justify-end'}>3 Minitos</TableCell>
+              <TableCell className={'flex justify-end'}>3 Minutos</TableCell>
             </TableRow>
           </TableBody>
         </Table>
