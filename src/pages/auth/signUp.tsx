@@ -1,4 +1,3 @@
-import React from 'react'
 import { Helmet } from 'react-helmet-async'
 import { Button } from '@/components/ui/button.tsx'
 import { Label } from '@/components/ui/label.tsx'
@@ -9,6 +8,9 @@ import { z } from 'zod'
 import { toast } from 'sonner'
 import { Separator } from '@/components/ui/separator.tsx'
 import { Link, useNavigate } from 'react-router-dom'
+import { useMutation } from 'react-query'
+import { signIn } from '@/api/signIn.ts'
+import { signUp } from '@/api/signUp.ts'
 
 const signUpSchema = z.object({
   email: z
@@ -59,12 +61,16 @@ export function SignUp() {
     resolver: zodResolver(signUpSchema),
   })
 
+  const { mutateAsync: registerRestaurant } = useMutation({
+    mutationFn: signUp,
+  })
+
   async function handleSignUp(data: ISignInSchema) {
-    console.log(data)
+    await registerRestaurant(data)
     toast.success('Estabelecimento criado com sucesso!', {
       action: {
         label: 'Login',
-        onClick: () => navigate('/sign-in'),
+        onClick: () => navigate(`/sign-in?email=${data.email}`),
       },
     })
   }

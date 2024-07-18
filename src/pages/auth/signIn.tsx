@@ -1,4 +1,3 @@
-import React from 'react'
 import { Helmet } from 'react-helmet-async'
 import { Button } from '@/components/ui/button.tsx'
 import { Label } from '@/components/ui/label.tsx'
@@ -7,8 +6,10 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { toast } from 'sonner'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import { Separator } from '@/components/ui/separator.tsx'
+import { useMutation } from 'react-query'
+import { signIn } from '@/api/signIn.ts'
 
 const signInSchema = z.object({
   email: z
@@ -26,15 +27,26 @@ const signInSchema = z.object({
 interface ISignInSchema extends z.infer<typeof signInSchema> {}
 
 export function SignIn() {
+  const [searchParams] = useSearchParams()
+
   const {
     handleSubmit,
     register,
+
     formState: { isSubmitting, errors },
   } = useForm<ISignInSchema>({
+    defaultValues: {
+      email: searchParams.get('email') || '',
+    },
     resolver: zodResolver(signInSchema),
   })
 
+  const { mutateAsync: authenticate } = useMutation({
+    mutationFn: signIn,
+  })
+
   async function handleSignIn(data: ISignInSchema) {
+    await authenticate({ email: data.email })
     console.log(data)
     toast.success('Enviamos um link de autenticação para seu email.')
   }

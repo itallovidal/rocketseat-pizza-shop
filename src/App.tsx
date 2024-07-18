@@ -5,6 +5,8 @@ import { Helmet, HelmetProvider } from 'react-helmet-async'
 import React from 'react'
 import { Toaster } from 'sonner'
 import { ThemeProvider } from '@/components/theme/themeProvider.tsx'
+import { QueryClientProvider } from 'react-query'
+import { queryClient } from '@/lib/reactQuery.ts'
 
 export function App() {
   return (
@@ -12,7 +14,9 @@ export function App() {
       <ThemeProvider storageKey={'pizzashop-theme'} defaultTheme={'dark'}>
         <Toaster />
         <Helmet titleTemplate={'%s | Pizza Shop'} />
-        <AppRoutes />
+        <QueryClientProvider client={queryClient}>
+          <AppRoutes />
+        </QueryClientProvider>
       </ThemeProvider>
     </HelmetProvider>
   )
