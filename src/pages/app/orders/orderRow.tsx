@@ -3,8 +3,17 @@ import { Button } from '@/components/ui/button.tsx'
 import { ChevronRight, Search, X } from 'lucide-react'
 import { Dialog, DialogTrigger } from '@/components/ui/dialog.tsx'
 import { OrderDetails } from '@/pages/app/orders/orderDetails.tsx'
+import { Order } from '@/api/getOrders.ts'
+import { OrderStatus } from '@/pages/app/orders/orderStatus.tsx'
+import { formatDistanceToNow } from 'date-fns'
+import { ptBR } from 'date-fns/locale'
 
-export function OrderRow() {
+export function OrderRow({
+  order: { orderId, status, total, customerName, createdAt },
+}: {
+  order: Order
+}) {
+  console.log(createdAt)
   return (
     <TableRow>
       <TableCell>
@@ -18,16 +27,25 @@ export function OrderRow() {
           <OrderDetails />
         </Dialog>
       </TableCell>
-      <TableCell className={'font-mono'}>1312312313</TableCell>
-      <TableCell>há 15 minutos</TableCell>
+      <TableCell className={'font-mono'}>{orderId}</TableCell>
       <TableCell>
-        <div className={'flex items-center gap-2'}>
-          <span className={'h-2 w-2 rounded-full bg-slate-500'} />
-          <span>Pendente</span>
-        </div>
+        <OrderStatus status={status} />
       </TableCell>
-      <TableCell>Nome nome nome nome</TableCell>
-      <TableCell>R$ 149,99</TableCell>
+      <TableCell>{customerName}</TableCell>
+
+      <TableCell>
+        {formatDistanceToNow(createdAt, {
+          locale: ptBR,
+          addSuffix: true,
+        })}
+      </TableCell>
+
+      <TableCell>
+        {total.toLocaleString('pt-BR', {
+          currency: 'BRL',
+          style: 'currency',
+        })}
+      </TableCell>
       <TableCell>
         <Button variant={'ghost'} size={'xs'}>
           Aprovar

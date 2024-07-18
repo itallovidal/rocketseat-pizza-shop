@@ -12,6 +12,5 @@ interface GetProfileResponse {
 
 export async function getProfile(): Promise<GetProfileResponse> {
   const response = await api.get('/me')
-
   return response.data
 }

@@ -9,8 +9,40 @@ import {
 import { OrderRow } from '@/pages/app/orders/orderRow.tsx'
 import { OrderFilters } from '@/pages/app/orders/orderFilters.tsx'
 import { Pagination } from '@/components/pagination.tsx'
+import { useQuery } from 'react-query'
+import { getOrders } from '@/api/getOrders.ts'
+import { z } from 'zod'
+import { useSearchParams } from 'react-router-dom'
+
+const URLPageSchema = z.coerce.number().transform((page) => page - 1)
 
 export function Orders() {
+  const [searchParams, setSearchParams] = useSearchParams()
+
+  const pageIndex = URLPageSchema.parse(searchParams.get('page') ?? 1)
+
+  const { data: ordersResponse } = useQuery({
+    queryFn: () =>
+      getOrders({
+        pageIndex,
+      }),
+    queryKey: ['orders', pageIndex],
+  })
+
+  function handlePage(pageIndex: number) {
+    console.log('->')
+    console.log(pageIndex)
+    setSearchParams((prev) => {
+      if (pageIndex < 0) {
+        return prev
+      }
+
+      prev.set('page', (pageIndex + 1).toString())
+
+      return prev
+    })
+  }
+
   return (
     <>
       <Helmet title={'Pedidos'} />
@@ -36,11 +68,21 @@ export function Orders() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              <OrderRow />
+              {ordersResponse &&
+                ordersResponse.orders.map((order) => {
+                  return <OrderRow key={order.orderId} order={order} />
+                })}
             </TableBody>
           </Table>
         </div>
-        <Pagination pageIndex={0} totalCount={105} perPage={10} />
+        {ordersResponse && (
+          <Pagination
+            onPageChange={handlePage}
+            pageIndex={pageIndex}
+            totalCount={ordersResponse.meta.totalCount}
+            perPage={ordersResponse.meta.perPage}
+          />
+        )}
       </div>
     </>
   )

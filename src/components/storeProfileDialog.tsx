@@ -1,4 +1,5 @@
 import {
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -8,11 +9,13 @@ import {
 import { Button } from '@/components/ui/button.tsx'
 import { Input } from '@/components/ui/input.tsx'
 import { Textarea } from '@/components/ui/textarea.tsx'
-import { useQuery } from 'react-query'
+import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { getManagedRestaurant } from '@/api/getManagedRestaurant.ts'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { updateProfile } from '@/api/updateProfile.ts'
+import { toast } from 'sonner'
 
 const storeProfileSchema = z.object({
   name: z.string().min(1),
@@ -22,18 +25,51 @@ const storeProfileSchema = z.object({
 interface IStoreProfileSchema extends z.infer<typeof storeProfileSchema> {}
 
 export function StoreProfileDialog() {
+  const queryClient = useQueryClient()
+
   const { data: managedRestaurant } = useQuery({
     queryKey: ['managed-restaurant'],
     queryFn: getManagedRestaurant,
+    staleTime: Infinity,
   })
 
-  const { register, handleSubmit } = useForm<IStoreProfileSchema>({
+  const { mutateAsync: updateProfileFn } = useMutation({
+    mutationFn: updateProfile,
+    onSuccess(_, { name, description }) {
+      const cache = queryClient.getQueryData(['managed-restaurant'])
+
+      if (cache) {
+        queryClient.setQueryData(['managed-restaurant'], {
+          ...cache,
+          name,
+          description,
+        })
+      }
+    },
+  })
+
+  const {
+    register,
+    handleSubmit,
+    formState: { isSubmitting },
+  } = useForm<IStoreProfileSchema>({
     resolver: zodResolver(storeProfileSchema),
     values: {
       name: managedRestaurant?.name ?? '',
       description: managedRestaurant?.description ?? '',
     },
   })
+
+  async function handleUpdate(data: IStoreProfileSchema) {
+    try {
+      await updateProfileFn(data)
+
+      toast.success('Perfeito, as informações foram atualizadas.')
+    } catch (e) {
+      console.log(e)
+      toast.error('Falha ao atualizar o perfil, tente novamente mais tarde.')
+    }
+  }
 
   return (
     <DialogContent>
@@ -44,8 +80,8 @@ export function StoreProfileDialog() {
         </DialogDescription>
       </DialogHeader>
 
-      <form action="">
-        <div className={'space-x-4 py-4'}>
+      <form onSubmit={handleSubmit(handleUpdate)}>
+        <div className={'space-y-4 py-4'}>
           <div className={'grid grid-cols-4 items-center gap-4'}>
             <label className={'text-right'} htmlFor="name">
               Nome
@@ -65,10 +101,12 @@ export function StoreProfileDialog() {
           </div>
         </div>
         <DialogFooter>
-          <Button variant={'ghost'} type={'button'}>
-            Cancelar
-          </Button>
-          <Button type={'submit'} variant={'success'}>
+          <DialogClose asChild>
+            <Button variant={'ghost'} type={'button'}>
+              Cancelar
+            </Button>
+          </DialogClose>
+          <Button disabled={isSubmitting} type={'submit'} variant={'success'}>
             Salvar
           </Button>
         </DialogFooter>

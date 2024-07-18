@@ -1,55 +1,70 @@
 import {
-    Pagination as ShadCnPagination,
-    PaginationContent,
-    PaginationEllipsis,
-    PaginationItem,
-    PaginationLink, PaginationNext,
-    PaginationPrevious
-} from "@/components/ui/pagination.tsx";
+  Pagination as ShadCnPagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from '@/components/ui/pagination.tsx'
 
-interface IPaginationProps{
-    pageIndex: number
-    totalCount: number
-    perPage: number
+interface IPaginationProps {
+  pageIndex: number
+  totalCount: number
+  perPage: number
+  onPageChange: (pageIndex: number) => void
 }
 
+export function Pagination({
+  totalCount,
+  perPage,
+  pageIndex,
+  onPageChange,
+}: IPaginationProps) {
+  const pages = Math.ceil(totalCount / perPage) || 1
 
-export function Pagination({totalCount, perPage, pageIndex} : IPaginationProps) {
-    const pages = Math.ceil(totalCount / perPage) || 1
+  return (
+    <div className={'flex items-center justify-between'}>
+      <span>Total de {totalCount} item(s).</span>
 
-    return (
-        <div className={'flex items-center justify-between'}>
-            <span>
-                Total de {totalCount} item(s).
-            </span>
+      <div>
+        <ShadCnPagination>
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious
+                className={'cursor-pointer'}
+                onClick={() => onPageChange(pageIndex - 1)}
+                title="Anterior"
+              />
+            </PaginationItem>
+            {Array.from({ length: pages }, (_, i) => {
+              if (i > 2) {
+                return <></>
+              }
 
-            <div>
-                <ShadCnPagination>
-                    <PaginationContent>
-                        <PaginationItem>
-                            <PaginationPrevious href="#" title="Anterior"/>
-                        </PaginationItem>
-                        {Array.from({length: pages}, (_, i)=>{
-                            if(i > 2){
-                                return
-                            }
-
-                            return (
-                                <PaginationItem>
-                                    <PaginationLink href="#">{i + 1}</PaginationLink>
-                                </PaginationItem>
-                            )
-                        } )}
-                        <PaginationItem>
-                            <PaginationEllipsis />
-                        </PaginationItem>
-                        <PaginationItem>
-                            <PaginationNext href="#" />
-                        </PaginationItem>
-                    </PaginationContent>
-                </ShadCnPagination>
-            </div>
-        </div>
-    );
+              return (
+                <PaginationItem key={i}>
+                  <PaginationLink
+                    className={'cursor-pointer'}
+                    onClick={() => onPageChange(i)}
+                  >
+                    {i + 1}
+                  </PaginationLink>
+                </PaginationItem>
+              )
+            })}
+            <PaginationItem>
+              <PaginationEllipsis />
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationNext
+                className={'cursor-pointer'}
+                onClick={() => onPageChange(pageIndex + 1)}
+              ></PaginationNext>
+            </PaginationItem>
+          </PaginationContent>
+        </ShadCnPagination>
+      </div>
+    </div>
+  )
 }
-

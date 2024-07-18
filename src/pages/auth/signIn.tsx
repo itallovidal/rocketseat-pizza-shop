@@ -46,9 +46,16 @@ export function SignIn() {
   })
 
   async function handleSignIn(data: ISignInSchema) {
-    await authenticate({ email: data.email })
-    console.log(data)
-    toast.success('Enviamos um link de autenticação para seu email.')
+    const signLink = await authenticate({ email: data.email })
+
+    toast.success('Autenticado com sucesso!', {
+      action: {
+        label: 'Ir para dashboard',
+        onClick: () => {
+          window.location.href = signLink
+        },
+      },
+    })
   }
 
   return (

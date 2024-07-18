@@ -4,8 +4,10 @@ interface SignBody {
   email: string
 }
 
-export async function signIn({ email }: SignBody) {
-  await api.post('/authenticate', {
+export async function signIn({ email }: SignBody): Promise<string> {
+  const response = await api.post('/authenticate', {
     email,
   })
+
+  return response.data
 }

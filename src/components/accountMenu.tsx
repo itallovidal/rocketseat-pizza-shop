@@ -8,15 +8,19 @@ import {
 } from '@/components/ui/dropdown-menu.tsx'
 import { Button } from '@/components/ui/button.tsx'
 import { Building, ChevronDown, LogOut } from 'lucide-react'
-import { useQuery } from 'react-query'
+import { useMutation, useQuery } from 'react-query'
 import { getProfile } from '@/api/getProfile.ts'
 import { getManagedRestaurant } from '@/api/getManagedRestaurant.ts'
 import { ButtonSkeleton } from '@/components/skeletons/ButtonSkeleton.tsx'
 import { Dialog, DialogTrigger } from '@/components/ui/dialog.tsx'
 import { StoreProfileDialog } from '@/components/storeProfileDialog.tsx'
+import { SignOut } from '@/api/signOut.ts'
+import { useNavigate } from 'react-router-dom'
 
 export function AccountMenu() {
-  const { data: profile, isLoading: getProfileLoading } = useQuery({
+  const navigation = useNavigate()
+
+  const { data: profile } = useQuery({
     queryKey: ['profile'],
     queryFn: getProfile,
   })
@@ -25,7 +29,15 @@ export function AccountMenu() {
     useQuery({
       queryKey: ['managed-restaurant'],
       queryFn: getManagedRestaurant,
+      staleTime: Infinity,
     })
+
+  const { mutateAsync: handleSignOut } = useMutation({
+    mutationFn: SignOut,
+    onSuccess: () => {
+      navigation('sign-in', { replace: true })
+    },
+  })
 
   return (
     <Dialog>
@@ -57,9 +69,17 @@ export function AccountMenu() {
 
           <DropdownMenuSeparator />
 
-          <DropdownMenuItem className={'flex justify-between text-rose-500'}>
-            <span className={'font-semibold'}>Sair</span>
-            <LogOut />
+          <DropdownMenuItem
+            asChild
+            className={'flex justify-between text-rose-500'}
+          >
+            <button
+              className={'w-full hover:cursor-pointer'}
+              onClick={() => handleSignOut()}
+            >
+              <span className={'font-semibold'}>Sair</span>
+              <LogOut />
+            </button>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
