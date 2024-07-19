@@ -19,19 +19,23 @@ const URLPageSchema = z.coerce.number().transform((page) => page - 1)
 export function Orders() {
   const [searchParams, setSearchParams] = useSearchParams()
 
+  const orderId = searchParams.get('orderId')
+  const status = searchParams.get('status')
+  const customerName = searchParams.get('customerName')
   const pageIndex = URLPageSchema.parse(searchParams.get('page') ?? 1)
 
   const { data: ordersResponse } = useQuery({
     queryFn: () =>
       getOrders({
         pageIndex,
+        orderId,
+        status,
+        customerName,
       }),
-    queryKey: ['orders', pageIndex],
+    queryKey: ['orders', pageIndex, orderId, status, customerName],
   })
 
   function handlePage(pageIndex: number) {
-    console.log('->')
-    console.log(pageIndex)
     setSearchParams((prev) => {
       if (pageIndex < 0) {
         return prev

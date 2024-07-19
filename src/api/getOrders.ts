@@ -15,7 +15,7 @@ export interface Order {
   total: number
 }
 
-interface GetOrdersResponse {
+export interface GetOrdersResponse {
   orders: Order[]
   meta: {
     pageIndex: number
@@ -25,15 +25,24 @@ interface GetOrdersResponse {
 }
 
 interface GetOrdersRequest {
-  pageIndex: number
+  pageIndex?: number | null
+  orderId?: string | null
+  status?: string | null
+  customerName?: string | null
 }
 
 export async function getOrders({
   pageIndex,
+  orderId,
+  status,
+  customerName,
 }: GetOrdersRequest): Promise<GetOrdersResponse> {
   const response = await api.get('/orders', {
     params: {
       pageIndex,
+      orderId,
+      status: status === 'all' ? undefined : status,
+      customerName,
     },
   })
 
