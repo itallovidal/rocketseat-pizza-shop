@@ -13,6 +13,7 @@ import { useQuery } from 'react-query'
 import { getOrders } from '@/api/getOrders.ts'
 import { z } from 'zod'
 import { useSearchParams } from 'react-router-dom'
+import { OrderTableSkeleton } from '@/components/skeletons/orderTableSkeleton.tsx'
 
 const URLPageSchema = z.coerce.number().transform((page) => page - 1)
 
@@ -72,10 +73,13 @@ export function Orders() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {ordersResponse &&
+              {ordersResponse ? (
                 ordersResponse.orders.map((order) => {
                   return <OrderRow key={order.orderId} order={order} />
-                })}
+                })
+              ) : (
+                <OrderTableSkeleton />
+              )}
             </TableBody>
           </Table>
         </div>

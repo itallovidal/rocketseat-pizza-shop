@@ -1,13 +1,34 @@
-import { Outlet } from 'react-router-dom'
+import { Outlet, useNavigate } from 'react-router-dom'
 import { Header } from '@/components/header.tsx'
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from '@/components/ui/hover-card.tsx'
-import { CalendarDays, Home } from 'lucide-react'
+import { useEffect } from 'react'
+import { isAxiosError } from 'axios'
+import { api } from '@/lib/axios.ts'
 
 export function AppLayout() {
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    const interceptorId = api.interceptors.response.use(
+      (response) => response,
+      (error) => {
+        if (isAxiosError(error)) {
+          const status = error.response.status
+          const code = error.response.data.code
+
+          if (status === 401 && code === 'UNAUTHORIZED') {
+            navigate('/sign-in', {
+              relative: true,
+            })
+          }
+        }
+      },
+    )
+
+    return () => {
+      api.interceptors.response.eject(interceptorId)
+    }
+  }, [navigate])
+
   return (
     <div>
       <Header />

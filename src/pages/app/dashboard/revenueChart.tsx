@@ -16,35 +16,16 @@ import {
   Line,
   XAxis,
 } from 'recharts'
-
-const data = [
-  {
-    date: '10/12',
-    revenue: 1200,
-  },
-  {
-    date: '12/12',
-    revenue: 312,
-  },
-  {
-    date: '13/12',
-    revenue: 432,
-  },
-  {
-    date: '14/12',
-    revenue: 567,
-  },
-  {
-    date: '15/12',
-    revenue: 923,
-  },
-  {
-    date: '16/12',
-    revenue: 1200,
-  },
-]
+import { useQuery } from 'react-query'
+import { getDailyRevenueInPeriod } from '@/api/getDailyRevenueInPeriod.ts'
+import { Loader2 } from 'lucide-react'
 
 export function RevenueChart() {
+  const { data } = useQuery({
+    queryFn: getDailyRevenueInPeriod,
+    queryKey: ['daily-revenue-in-period', 'metrics'],
+  })
+
   return (
     <Card className={'col-span-6'}>
       <CardHeader className={'flex-row items-center justify-between pb-8'}>
@@ -54,31 +35,37 @@ export function RevenueChart() {
         </div>
       </CardHeader>
       <CardContent>
-        <ResponsiveContainer width={'100%'} height={240}>
-          <LineChart data={data} style={{ fontSize: 12 }}>
-            <CartesianGrid vertical={false} className={'stroke-muted'} />
+        {data ? (
+          <ResponsiveContainer width={'100%'} height={240}>
+            <LineChart data={data} style={{ fontSize: 12 }}>
+              <CartesianGrid vertical={false} className={'stroke-muted'} />
 
-            <XAxis dataKey={'date'} tickLine={false} dy={16} />
+              <XAxis dataKey={'date'} tickLine={false} dy={16} />
 
-            <YAxis
-              width={80}
-              axisLine={false}
-              tickLine={false}
-              tickFormatter={(value: number) =>
-                value.toLocaleString('pt-BR', {
-                  style: 'currency',
-                  currency: 'BRL',
-                })
-              }
-            />
-            <Line
-              type={'linear'}
-              strokeWidth={2}
-              dataKey={'revenue'}
-              stroke={colors.red['600']}
-            />
-          </LineChart>
-        </ResponsiveContainer>
+              <YAxis
+                width={80}
+                axisLine={false}
+                tickLine={false}
+                tickFormatter={(value: number) =>
+                  value.toLocaleString('pt-BR', {
+                    style: 'currency',
+                    currency: 'BRL',
+                  })
+                }
+              />
+              <Line
+                type={'linear'}
+                strokeWidth={2}
+                dataKey={'receipt'}
+                stroke={colors.red['600']}
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        ) : (
+          <div className={'flex items-center justify-center h-[240px]'}>
+            <Loader2 className={'size-8 animate-spin text-muted-foreground'} />
+          </div>
+        )}
       </CardContent>
     </Card>
   )
