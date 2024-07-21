@@ -46,7 +46,7 @@ export function AccountMenu() {
           {getManagedRestaurantLoading ? (
             <ButtonSkeleton />
           ) : (
-            <Button variant={'outline'}>
+            <Button className={'flex-1 sm:flex-grow-0'} variant={'outline'}>
               {managedRestaurant?.name} <ChevronDown />
             </Button>
           )}

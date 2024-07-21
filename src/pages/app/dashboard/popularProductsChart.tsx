@@ -27,7 +27,7 @@ export function PopularProductsChart() {
   })
 
   return (
-    <Card className={'col-span-3'}>
+    <Card className={'md:col-span-3 col-span-6'}>
       <CardHeader className={'flex-row items-center justify-between pb-8'}>
         <div className={'space-y-1 flex-row flex justify-between w-full'}>
           <CardTitle className={''}>Produtos populares</CardTitle>

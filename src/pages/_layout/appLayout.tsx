@@ -1,8 +1,8 @@
 import { Outlet, useNavigate } from 'react-router-dom'
-import { Header } from '@/components/header.tsx'
 import { useEffect } from 'react'
 import { isAxiosError } from 'axios'
 import { api } from '@/lib/axios.ts'
+import { Header } from '@/components/header.tsx'
 
 export function AppLayout() {
   const navigate = useNavigate()

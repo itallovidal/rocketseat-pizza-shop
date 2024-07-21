@@ -24,7 +24,11 @@ export function Pagination({
   const pages = Math.ceil(totalCount / perPage) || 1
 
   return (
-    <div className={'flex items-center justify-between'}>
+    <div
+      className={
+        'flex items-center justify-between flex-col md:flex-row gap-4 md:gap-0 md:items-center'
+      }
+    >
       <span>Total de {totalCount} item(s).</span>
 
       <div>

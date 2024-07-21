@@ -65,7 +65,7 @@ export function OrderFilters() {
   return (
     <form
       onSubmit={() => handleSubmit(handleFilter)}
-      className={'flex items-center gap-2'}
+      className={'flex-col md:flex-row flex items-start md:items-center gap-2'}
     >
       <span>Filtros:</span>
       <Input
