@@ -9,5 +9,9 @@ export async function signIn({ email }: SignInBody): Promise<string> {
     email,
   })
 
+  if (response.status !== 200) {
+    throw new Error(response.data)
+  }
+
   return response.data
 }

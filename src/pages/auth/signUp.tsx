@@ -66,13 +66,17 @@ export function SignUp() {
   })
 
   async function handleSignUp(data: ISignInSchema) {
-    await registerRestaurant(data)
-    toast.success('Estabelecimento criado com sucesso!', {
-      action: {
-        label: 'Login',
-        onClick: () => navigate(`/sign-in?email=${data.email}`),
-      },
-    })
+    try {
+      await registerRestaurant(data)
+      toast.success('Estabelecimento criado com sucesso!', {
+        action: {
+          label: 'Login',
+          onClick: () => navigate(`/sign-in?email=${data.email}`),
+        },
+      })
+    } catch (e) {
+      toast.error('Erro ao cadastrar o restaurante.')
+    }
   }
 
   return (

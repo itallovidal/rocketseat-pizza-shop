@@ -48,18 +48,7 @@ export function SignIn() {
 
   async function handleSignIn(data: ISignInSchema) {
     try {
-      const signLink = await authenticate({ email: data.email }).catch(
-        async (e) => {
-          if (isAxiosError(e)) {
-            const { cause } = e.response.data as { cause: string }
-            throw new Error(cause)
-          }
-
-          throw new Error(
-            'Não foi possível se conectar ao servidor, tente novamente mais tarde.',
-          )
-        },
-      )
+      const signLink = await authenticate({ email: data.email })
 
       toast.success('Autenticado com sucesso!', {
         action: {
@@ -70,7 +59,13 @@ export function SignIn() {
         },
       })
     } catch (e) {
-      toast.error(e.message)
+      if (isAxiosError(e)) {
+        const { cause } = e.response.data as { cause: string }
+        toast.error(cause)
+        return
+      }
+
+      toast.error('Não foi possível se conectar ao servidor')
     }
   }
 
