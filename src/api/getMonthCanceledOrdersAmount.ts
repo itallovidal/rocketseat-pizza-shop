@@ -1,6 +1,6 @@
 import { api } from '@/lib/axios.ts'
 
-interface GetCanceledOrdersAmountResponse {
+export interface GetCanceledOrdersAmountResponse {
   amount: number
   diffFromLastMonth: number
 }

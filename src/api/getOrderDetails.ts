@@ -10,7 +10,7 @@ export interface OrderItems {
   }
 }
 
-interface GetOrderDetailsResponse {
+export interface GetOrderDetailsResponse {
   id: string
   createdAt: string
   status: TOrderStatus

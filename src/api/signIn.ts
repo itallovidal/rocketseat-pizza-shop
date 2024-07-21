@@ -1,10 +1,10 @@
 import { api } from '@/lib/axios.ts'
 
-interface SignBody {
+export interface SignInBody {
   email: string
 }
 
-export async function signIn({ email }: SignBody): Promise<string> {
+export async function signIn({ email }: SignInBody): Promise<string> {
   const response = await api.post('/authenticate', {
     email,
   })

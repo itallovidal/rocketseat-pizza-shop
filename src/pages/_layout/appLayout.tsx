@@ -19,6 +19,8 @@ export function AppLayout() {
             navigate('/sign-in', {
               relative: true,
             })
+          } else {
+            throw error
           }
         }
       },

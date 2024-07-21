@@ -1,6 +1,6 @@
 import { api } from '@/lib/axios.ts'
 
-interface SignBody {
+export interface SignUpBody {
   restaurantName: string
   email: string
   phone: string
@@ -12,7 +12,7 @@ export async function signUp({
   managerName,
   restaurantName,
   phone,
-}: SignBody) {
+}: SignUpBody) {
   await api.post('/restaurants', {
     email,
     restaurantName,

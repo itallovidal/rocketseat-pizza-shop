@@ -26,13 +26,11 @@ export function CanceledOrdersAmount() {
       <CardContent>
         {data ? (
           <>
-            <span className={'text-2xl font-bold tracking-tight'}>
-              {data.amount}
-            </span>
-
             {data.diffFromLastMonth <= 0 ? (
               <>
-                <span>{data.amount}</span>
+                <span className={'text-2xl font-bold tracking-tight'}>
+                  {data.amount}
+                </span>
                 <p className={'text-xs text-muted-foreground'}>
                   <span
                     className={'mr-2 text-emerald-500 dark:text-emerald-400'}

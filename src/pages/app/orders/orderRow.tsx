@@ -95,10 +95,6 @@ export function OrderRow({
         </Dialog>
       </TableCell>
       <TableCell className={'font-mono'}>{orderId}</TableCell>
-      <TableCell>
-        <OrderStatus status={status} />
-      </TableCell>
-      <TableCell>{customerName}</TableCell>
 
       <TableCell>
         {formatDistanceToNow(createdAt, {
@@ -106,6 +102,12 @@ export function OrderRow({
           addSuffix: true,
         })}
       </TableCell>
+
+      <TableCell>
+        <OrderStatus status={status} />
+      </TableCell>
+
+      <TableCell>{customerName}</TableCell>
 
       <TableCell>
         {(total / 100).toLocaleString('pt-BR', {

@@ -10,6 +10,7 @@ import { Link, useSearchParams } from 'react-router-dom'
 import { Separator } from '@/components/ui/separator.tsx'
 import { useMutation } from 'react-query'
 import { signIn } from '@/api/signIn.ts'
+import { isAxiosError } from 'axios'
 
 const signInSchema = z.object({
   email: z
@@ -46,16 +47,31 @@ export function SignIn() {
   })
 
   async function handleSignIn(data: ISignInSchema) {
-    const signLink = await authenticate({ email: data.email })
+    try {
+      const signLink = await authenticate({ email: data.email }).catch(
+        async (e) => {
+          if (isAxiosError(e)) {
+            const { cause } = e.response.data as { cause: string }
+            throw new Error(cause)
+          }
 
-    toast.success('Autenticado com sucesso!', {
-      action: {
-        label: 'Ir para dashboard',
-        onClick: () => {
-          window.location.href = signLink
+          throw new Error(
+            'Não foi possível se conectar ao servidor, tente novamente mais tarde.',
+          )
         },
-      },
-    })
+      )
+
+      toast.success('Autenticado com sucesso!', {
+        action: {
+          label: 'Ir para dashboard',
+          onClick: () => {
+            window.location.href = signLink
+          },
+        },
+      })
+    } catch (e) {
+      toast.error(e.message)
+    }
   }
 
   return (

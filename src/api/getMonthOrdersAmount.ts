@@ -1,6 +1,6 @@
 import { api } from '@/lib/axios.ts'
 
-interface GetMonthOrdersAmountResponse {
+export interface GetMonthOrdersAmountResponse {
   amount: number
   diffFromLastMonth: number
 }

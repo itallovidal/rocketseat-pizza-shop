@@ -1,6 +1,6 @@
 import { api } from '@/lib/axios.ts'
 
-interface GetDailyRevenueInPeriod {
+export interface GetDailyRevenueInPeriod {
   date: number
   receipt: number
 }
