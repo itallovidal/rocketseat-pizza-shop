@@ -1,7 +1,7 @@
 # Pizza Shop
 O objetivo deste projeto é através de uma plataforma de gerenciamento de pedidos de restaurante aprender conceitos importantes não apenas de React, mas também com a comunicação com APIs via requisições HTTP. Não apenas isso, estudar sobre testes de aplicação, unitários e e2e.
 
-Foram utilizadas uma série de tecnologias no desenvolvimento deste projeto como React Router DOM, Vite, React Hook Form, Shadcn/ui, tailwind, playwright, vitest e mais algumas outras.
+Foram utilizadas uma série de tecnologias no desenvolvimento deste projeto como React Router DOM, React Query, Vite, React Hook Form, Shadcn/ui, tailwind, playwright, vitest e mais algumas outras.
 
 Certificado do módulo:
 https://app.rocketseat.com.br/certificates/59883e05-2a83-482a-a86c-4ac8308ffded
